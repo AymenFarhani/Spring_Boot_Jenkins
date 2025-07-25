@@ -1,6 +1,7 @@
 package com.demo.domain;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ public class Project {
     private Long id;
     private String name;
     private String description;
+    @CreatedDate
     private LocalDate startedDate;
     private BigDecimal budget;
 
