@@ -25,13 +25,23 @@ public class ProjectController {
 
     @GetMapping("/project/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable(name = "id") Long id) {
-        Project project = projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Project not found exception!"));
+        Project project = projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Project not found!"));
         return ResponseEntity.status(HttpStatus.OK).body(project);
     }
 
     @PostMapping("/project")
     public ResponseEntity<Project> createProject(@RequestBody Project project) {
         return ResponseEntity.status(HttpStatus.CREATED).body(projectRepository.save(project));
+    }
+
+    @PatchMapping("/project/{id}")
+    public ResponseEntity<Project> updateProject(@PathVariable(name="id") Long id, @RequestBody Project project) {
+        Project projectInDb = projectRepository.findById(id).orElseThrow(()-> new RuntimeException("Project not found!"));
+        projectInDb.setName(project.getName());
+        projectInDb.setDescription(project.getDescription());
+        projectInDb.setBudget(project.getBudget());
+        projectInDb.setStartedDate(project.getStartedDate());
+        return ResponseEntity.status(HttpStatus.OK).body(projectRepository.save(projectInDb));
     }
 
     @DeleteMapping("/project/{id}")
