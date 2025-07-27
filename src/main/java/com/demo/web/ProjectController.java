@@ -2,6 +2,9 @@ package com.demo.web;
 
 import com.demo.domain.Project;
 import com.demo.persistence.ProjectRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +22,10 @@ public class ProjectController {
     }
 
     @GetMapping("/projects")
-    public ResponseEntity<List<Project>>  getProjects() {
-        return ResponseEntity.status(HttpStatus.OK).body(projectRepository.findAll());
+    public ResponseEntity<Page<Project>>  getProjects(@RequestParam(name="page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "2") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Project> projects = projectRepository.findAll(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(projects);
     }
 
     @GetMapping("/project/{id}")

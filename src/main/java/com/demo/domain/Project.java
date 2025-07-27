@@ -21,6 +21,13 @@ public class Project {
     public Project() {
     }
 
+    public Project(String name, String description, LocalDate startedDate, BigDecimal budget) {
+        this.name = name;
+        this.description = description;
+        this.startedDate = startedDate;
+        this.budget = budget;
+    }
+
     public Long getId() {
         return id;
     }
