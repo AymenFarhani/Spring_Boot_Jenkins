@@ -1,6 +1,7 @@
 package com.demo.web;
 
 import com.demo.domain.Project;
+import com.demo.logging.Log;
 import com.demo.persistence.ProjectRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,8 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -22,6 +21,7 @@ public class ProjectController {
     }
 
     @GetMapping("/projects")
+    @Log
     public ResponseEntity<Page<Project>>  getProjects(@RequestParam(name="page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "2") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Project> projects = projectRepository.findAll(pageable);
@@ -29,6 +29,7 @@ public class ProjectController {
     }
 
     @GetMapping("/project/{id}")
+    @Log
     public ResponseEntity<Project> getProjectById(@PathVariable(name = "id") Long id) {
         Project project = projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Project not found!"));
         return ResponseEntity.status(HttpStatus.OK).body(project);
